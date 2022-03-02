@@ -17,24 +17,49 @@ const { width, height } = Dimensions.get("window");
 const visitorRequest = [
   {
     vid: 1,
-    photo:{uri:'https://www.dppics.in/2021/08/-most-beautiful-profile-picture-for-facebook.html'},
-    visitorName: "Sanket",
+    photo: {
+      uri: "https://images.alphacoders.com/695/thumb-350-695222.jpg",
+    },
+    role:"Courier Boy",
+    reason:"For Parcel",
+    visitorName: "Sanket khardekar",
   },
   {
     vid: 2,
-    visitorName: "Rahul",
+    photo: "",
+    role:"Maid",
+    reason:"Household",
+    visitorName: "Rahul gdgfdfr",
   },
   {
     vid: 3,
-    visitorName: "Shruti",
+    visitorName: "Shruti resdfs",
+    role:"",
+    reason:"",
   },
   {
     vid: 4,
-    visitorName: "Hello",
+    visitorName: "Hello resfser",
+    role:"sdf",
+    reason:"dfsd",
   },
   {
     vid: 5,
-    visitorName: "Sanket",
+    visitorName: "Sanket rfrf",
+    role:"",
+    reason:"",
+  },
+  {
+    vid: 6,
+    visitorName: "Hello",
+    role:"",
+    reason:"",
+  },
+  {
+    vid: 7,
+    visitorName: "Sanket sfs",
+    role:"",
+    reason:"",
   },
 ];
 const DUMMY_EXPENSES = [
@@ -88,7 +113,8 @@ const Homescreen = ({ navigation }) => {
   const actions = [
     {
       label: "View",
-      onPress: () => navigation.navigate('IncomingRequestScreen',{data:visitorRequest}),
+      onPress: () =>
+        navigation.navigate("IncomingRequestScreen", { data: visitorRequest }),
     },
     {
       label: "Dismiss",
@@ -97,11 +123,8 @@ const Homescreen = ({ navigation }) => {
   ];
 
   return (
-    
     <View style={{ flexDirection: "column" }}>
-      <View>
-        
-      </View>
+      <View></View>
       {visitorRequest.length > 0 ? (
         <BannerComponent
           visible={visible}
@@ -123,7 +146,6 @@ const Homescreen = ({ navigation }) => {
         <VisitorList data={DUMMY_EXPENSES} />
       </View>
     </View>
- 
   );
 };
 

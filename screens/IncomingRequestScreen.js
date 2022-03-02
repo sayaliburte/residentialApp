@@ -2,60 +2,73 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Text,
   FlatList,
-  ImageBackground,
   Dimensions,
   Image,
-  ScrollView,
-  SafeAreaView,
+  Button,ImageBackground
 } from "react-native";
-import {
-  List,
-  Card,
-  Button,
-  Appbar,
-  Paragraph,
-  Dialog,
-  Portal,
-  Provider,
-  Title,
-  Avatar,
-  Banner,
-} from "react-native-paper";
+import { List, Card } from "react-native-paper";
 const { width, height } = Dimensions.get("screen");
 const IncomingRequestScreen = ({ route, navigation }) => {
   const { data } = route.params;
 
   return (
     <View style={{ flex: 1 }}>
-      <Card elevation={20}>
-        <Card.Title
-          title="Visitor's List"
-          style={styles.cardTitle}
-          titleStyle={{
-            color: "white",
-            alignSelf: "center",
-          }}
-        />
-        <FlatList
-          data={data}
-          renderItem={(itemData) => (
-            <View>
-              <Card.Content >
-                <Image
-                  style={{width:100,height:100}}
-                  source={{
-                    uri: "https://spng.subpng.com/20190305/opf/kisspng-computer-icons-portable-network-graphics-clip-art-conference-background-selec-icons-5c7f139f2e4071.9721598415518319671895.jpg",
-                  }}
+       <ImageBackground source={require('../assets/building.jpg')} resizeMode="cover" style={styles.image}>
+      <FlatList
+        data={data}
+        renderItem={(itemData) => (
+          <Card style={{ margin: 4, borderRadius: 30 }}>
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ flex: 2 }}>
+                {itemData.item.photo ? (
+                  <Image
+                    style={{
+                      width: 80,
+                      height: 90,
+                      borderRadius: 60,
+                      margin: 6,
+                    }}
+                    source={itemData.item.photo}
+                  />
+                ) : (
+                  <Image
+                    style={{
+                      width: 80,
+                      height: 90,
+                      borderRadius: 60,
+                      margin: 3,
+                    }}
+                    source={{
+                      uri: "https://spng.subpng.com/20190305/opf/kisspng-computer-icons-portable-network-graphics-clip-art-conference-background-selec-icons-5c7f139f2e4071.9721598415518319671895.jpg",
+                    }}
+                  />
+                )}
+              </View>
+              <View style={{ flex: 1}}>
+                <List.Item
+                  title={itemData.item.visitorName}
+                  titleNumberOfLines={2}
+                  description={`${itemData.item.role}\n${itemData.item.reason}`}
                 />
-                <List.Item title={itemData.item.visitorName} />
-              </Card.Content>
+              </View>
+              <View
+                style={{
+                  flex: 3,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginVertical: 10,
+                }}
+              >
+                <Button title="Accept" color="forestgreen" onPress={() => {}} />
+                <Button title="Decline" color="tomato" onPress={() => {}} />
+              </View>
             </View>
-          )}
-          keyExtractor={(item) => item.vid}
-        />
-      </Card>
+          </Card>
+        )}
+        keyExtractor={(item) => item.vid}
+      />
+      </ImageBackground>
     </View>
   );
 };
@@ -64,6 +77,10 @@ const styles = StyleSheet.create({
   cardTitle: {
     backgroundColor: "#8100ff",
     borderRadius: 15,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center"
   },
 });
 
