@@ -1,31 +1,108 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Dimensions,
-  Image,
-  Button,ImageBackground
-} from "react-native";
-import { List, Card } from "react-native-paper";
-const { width, height } = Dimensions.get("screen");
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, FlatList, Modal, Image } from "react-native";
+import { List, Card, Button, TextInput } from "react-native-paper";
+
 const IncomingRequestScreen = ({ route, navigation }) => {
-  const { data } = route.params;
+  // const { data, finalVisitorArray } = route.params;
+  //const [modifiedData, setModifiedData] = useState(data);
+  const [rejectReason, setRejectReason] = useState(false);
+  const [text, setText] = useState("");
+  const [idToReject, setIdToReject] = useState(0);
+  const [refresh, setRefresh] = useState(false);
+  /*useEffect(() => {
+    setRefresh(!refresh)
+  }, [setModifiedData,setRefresh]);
+  const handleDeleteVisitor = () => {
+    const tempdata = modifiedData.filter(
+      (filterData) => filterData.vid === idToReject
+    );
+    const t = tempdata.pop();
+
+    const addedData = { ...t, rejectedReason: text };
+
+    finalVisitorArray.push(addedData);
+
+    const deleteData = modifiedData.filter(
+      (filterData) => filterData.vid !== idToReject
+    );
+    console.log(deleteData);
+    setModifiedData(deleteData);
+
+    setText("");
+    setRejectReason(false);
+  };
+
+  const handleAddVisitor = (id) => {
+    const tempdata = modifiedData.filter((filterData) => filterData.vid === id);
+    const t = tempdata.pop();
+
+    finalVisitorArray.push(t);
+  };*/
+
+  const visitorRequest = [
+    {
+      vid: 1,
+      photo: {
+        uri: "https://images.alphacoders.com/695/thumb-350-695222.jpg",
+      },
+      role: "Courier Boy",
+      reason: "For Parcel",
+      visitorName: "Sayali Burte",
+      dateTime: "5/6/2022 06:33",
+    },
+    {
+      vid: 2,
+      photo: "",
+      role: "Maid",
+      reason: "Household",
+      visitorName: "Sanket Khardekar",
+      dateTime: "5/6/2022 06:33",
+    },
+    {
+      vid: 3,
+      photo: "",
+      role: "Maid",
+      reason: "Household",
+      visitorName: "Shital Bhosale",
+      dateTime: "5/6/2022 06:33",
+    },
+    {
+      vid: 4,
+      photo: "",
+      role: "Maid",
+      reason: "Household",
+      visitorName: "Shital Bhosale",
+      dateTime: "5/6/2022 06:33",
+    },
+    {
+      vid: 5,
+      photo: "",
+      role: "Maid",
+      reason: "Household",
+      visitorName: "Shital Bhosale",
+      dateTime: "5/6/2022 06:33",
+    },
+  ];
 
   return (
-    <View style={{ flex: 1 }}>
-       <ImageBackground source={require('../assets/building.jpg')} resizeMode="cover" style={styles.image}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#f8ceec",
+        backgroundImage: "linear-gradient(315deg, #f8ceec 0%, #a88beb 74%)",
+      }}
+    >
       <FlatList
-        data={data}
+        data={visitorRequest}
         renderItem={(itemData) => (
           <Card style={{ margin: 4, borderRadius: 30 }}>
             <View style={{ flexDirection: "row" }}>
-              <View style={{ flex: 2 }}>
+              <View style={{ flex: 1 }}>
                 {itemData.item.photo ? (
                   <Image
                     style={{
                       width: 80,
-                      height: 90,
+                      height: 80,
                       borderRadius: 60,
                       margin: 6,
                     }}
@@ -35,7 +112,7 @@ const IncomingRequestScreen = ({ route, navigation }) => {
                   <Image
                     style={{
                       width: 80,
-                      height: 90,
+                      height: 80,
                       borderRadius: 60,
                       margin: 3,
                     }}
@@ -45,7 +122,7 @@ const IncomingRequestScreen = ({ route, navigation }) => {
                   />
                 )}
               </View>
-              <View style={{ flex: 1}}>
+              <View style={{ flex: 4, marginLeft: 40 }}>
                 <List.Item
                   title={itemData.item.visitorName}
                   titleNumberOfLines={2}
@@ -55,20 +132,55 @@ const IncomingRequestScreen = ({ route, navigation }) => {
               <View
                 style={{
                   flex: 3,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginVertical: 10,
+                  justifyContent: "space-around",
+                  alignItems: "baseline",
+                  flexDirection: "row",
                 }}
               >
-                <Button title="Accept" color="forestgreen" onPress={() => {}} />
-                <Button title="Decline" color="tomato" onPress={() => {}} />
+                <Button
+                  title=""
+                  color="#8F00FF"
+                  icon="check-circle"
+                  labelStyle={{ fontSize: 46 }}
+                  //  onPress={/*handleAddVisitor.bind(this, itemData.item.vid)*/}
+                />
+                <Button
+                  title=""
+                  color="tomato"
+                  icon="delete-forever"
+                  labelStyle={{ fontSize: 50 }}
+                  onPress={() => {
+                    //   setIdToReject(itemData.item.vid);
+                    // setRejectReason(true);
+                  }}
+                />
               </View>
             </View>
           </Card>
         )}
         keyExtractor={(item) => item.vid}
+        // extraData={refresh}
       />
-      </ImageBackground>
+
+      <View style={styles.centeredView}>
+        <Modal animationType="slide" transparent={true} visible={rejectReason}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TextInput
+                label="Reason"
+                value={text}
+                style={{ width: "100%", marginBottom: 10 }}
+                onChangeText={(t) => setText(t)}
+              />
+              <View>
+                <Button mode="contained" /*onPress={handleDeleteVisitor}*/>
+                  Submit
+                </Button>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </View>
   );
 };
@@ -80,7 +192,50 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+
+    width: "70%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 

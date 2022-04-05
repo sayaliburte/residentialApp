@@ -1,120 +1,81 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  ImageBackground,
-  Dimensions,
-  Image,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import React, { useState, useLayoutEffect } from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
 
 import VisitorList from "../components/Member/VisitorsList";
+import { Button } from "react-native-paper";
 
 import BannerComponent from "../components/UI/BannerComponent";
 const { width, height } = Dimensions.get("window");
-const visitorRequest = [
+const allVisitorData = [
   {
     vid: 1,
     photo: {
       uri: "https://images.alphacoders.com/695/thumb-350-695222.jpg",
     },
-    role:"Courier Boy",
-    reason:"For Parcel",
-    visitorName: "Sanket khardekar",
+    role: "Courier Boy",
+    reason: "For Parcel",
+    visitorName: "Sayali Burte",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"accepted"
   },
   {
     vid: 2,
     photo: "",
-    role:"Maid",
-    reason:"Household",
-    visitorName: "Rahul gdgfdfr",
+    role: "Maid",
+    reason: "Household",
+    visitorName: "Sanket Khardekar",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"accepted"
   },
   {
     vid: 3,
-    visitorName: "Shruti resdfs",
-    role:"",
-    reason:"",
+
+    role: "Maid",
+    reason: "Household",
+    visitorName: "Shital Bhosale",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"accepted"
   },
   {
     vid: 4,
-    visitorName: "Hello resfser",
-    role:"sdf",
-    reason:"dfsd",
+    photo: "",
+    role: "Maid",
+    reason: "Guest",
+    visitorName: "Chanakya Lahiri",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"accepted"
   },
   {
     vid: 5,
-    visitorName: "Sanket rfrf",
-    role:"",
-    reason:"",
+    photo: "",
+    role: "Maid",
+    reason: "Household",
+    visitorName: "Shivani",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"decline"
   },
-  {
-    vid: 6,
-    visitorName: "Hello",
-    role:"",
-    reason:"",
-  },
-  {
-    vid: 7,
-    visitorName: "Sanket sfs",
-    role:"",
-    reason:"",
-  },
-];
-const DUMMY_EXPENSES = [
-  {
-    id: "e1",
-    memberName: "Ram",
-    date: "5/2/2022",
-    time: "4:50 pm",
-  },
-  {
-    id: "e2",
-    memberName: "Rahul",
-    date: "4/2/2022",
-    time: "4:55 pm",
-  },
-  { id: "e3", memberName: "Sayali", date: "15/2/2022", time: "4:55 pm" },
-  {
-    id: "e4",
-    memberName: "Sanket",
-    date: "14/2/2022",
-    time: "4:55 pm",
-  },
-  {
-    id: "e5",
-    memberName: "Sayali",
-    date: "11/2/2022",
-    time: "1:45 pm",
-  },
-  {
-    id: "e6",
-    memberName: "Sayali",
-    date: "11/2/2022",
-    time: "1:45 pm",
-  },
-  {
-    id: "e7",
-    memberName: "Sayali",
-    date: "11/2/2022",
-    time: "1:45 pm",
-  },
-  {
-    id: "e8",
-    memberName: "Sayali",
-    date: "11/2/2022",
-    time: "1:45 pm",
-  },
+  
 ];
 
 const Homescreen = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          icon="account-box"
+          labelStyle={{ fontSize: 27 }}
+          onPress={() => console.log("Pressed")}
+          title=""
+          color="white"
+        />
+      ),
+    });
+  }, [navigation]);
   const [visible, setVisible] = useState(true);
   const actions = [
     {
       label: "View",
-      onPress: () =>
-        navigation.navigate("IncomingRequestScreen", { data: visitorRequest }),
+      onPress: () => navigation.navigate("IncomingRequestScreen"),
     },
     {
       label: "Dismiss",
@@ -122,28 +83,12 @@ const Homescreen = ({ navigation }) => {
     },
   ];
 
+  const acceptedVisitorList=allVisitorData.filter(v=>v.requestStatus==="accepted");
+ 
   return (
     <View style={{ flexDirection: "column" }}>
-      <View></View>
-      {visitorRequest.length > 0 ? (
-        <BannerComponent
-          visible={visible}
-          actions={actions}
-          description={`Dear Sanket,You have ${visitorRequest.length} visitor request pending`}
-          visitorArray={visitorRequest}
-        />
-      ) : (
-        <View></View>
-      )}
-
-      <View
-        style={
-          visitorRequest.length > 0
-            ? styles.visitorCardContainer2
-            : styles.visitorCardContainer
-        }
-      >
-        <VisitorList data={DUMMY_EXPENSES} />
+      <View style={styles.visitorCardContainer}>
+        <VisitorList data={acceptedVisitorList} />
       </View>
     </View>
   );
@@ -151,13 +96,6 @@ const Homescreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   visitorCardContainer: {
-    height: height / 2,
-    paddingTop: height * 0.15,
-    flexDirection: "column",
-    alignItems: "center",
-  },
-
-  visitorCardContainer2: {
     height: height / 2,
     paddingTop: height * 0.1,
     flexDirection: "column",
