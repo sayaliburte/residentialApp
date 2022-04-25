@@ -12,8 +12,8 @@ const allVisitorData = [
     photo: {
       uri: "https://images.alphacoders.com/695/thumb-350-695222.jpg",
     },
-    role: "Courier Boy",
-    reason: "For Parcel",
+    role: "Guest",
+    reason: "Guest",
     visitorName: "Sayali Burte",
     dateTime: "5/6/2022 06:33",
     requestStatus:"accepted"
@@ -21,8 +21,8 @@ const allVisitorData = [
   {
     vid: 2,
     photo: "",
-    role: "Maid",
-    reason: "Household",
+    role: "Guest",
+    reason: "Guest",
     visitorName: "Sanket Khardekar",
     dateTime: "5/6/2022 06:33",
     requestStatus:"accepted"
@@ -39,8 +39,8 @@ const allVisitorData = [
   {
     vid: 4,
     photo: "",
-    role: "Maid",
-    reason: "Guest",
+    role: "Courier Boy",
+    reason: "Courier Boy",
     visitorName: "Chanakya Lahiri",
     dateTime: "5/6/2022 06:33",
     requestStatus:"accepted"
@@ -48,13 +48,30 @@ const allVisitorData = [
   {
     vid: 5,
     photo: "",
-    role: "Maid",
-    reason: "Household",
-    visitorName: "Shivani",
+    role: "Guest",
+    reason: "Guest",
+    visitorName: "Shivani Shevale",
     dateTime: "5/6/2022 06:33",
     requestStatus:"decline"
   },
-  
+  {
+    vid: 6,
+    photo: "",
+    role: "Guest",
+    reason: "Guest",
+    visitorName: "Snehal Salunkhe",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"decline"
+  },
+  {
+    vid: 7,
+    photo: "",
+    role: "Maid",
+    reason: "Household",
+    visitorName: "Samiksha Gurav",
+    dateTime: "5/6/2022 06:33",
+    requestStatus:"decline"
+  },
 ];
 
 const Homescreen = ({ navigation }) => {

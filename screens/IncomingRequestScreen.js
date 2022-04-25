@@ -36,7 +36,8 @@ const IncomingRequestScreen = ({ route, navigation }) => {
     const tempdata = modifiedData.filter((filterData) => filterData.vid === id);
     const t = tempdata.pop();
 
-    finalVisitorArray.push(t);
+    finalVisitorArray.push(t);background-color: #fad0c4;
+      background-image: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);
   };*/
 
   const visitorRequest = [
@@ -45,22 +46,22 @@ const IncomingRequestScreen = ({ route, navigation }) => {
       photo: {
         uri: "https://images.alphacoders.com/695/thumb-350-695222.jpg",
       },
-      role: "Courier Boy",
-      reason: "For Parcel",
+      role: "Guest",
+      reason: "Guest",
       visitorName: "Sayali Burte",
       dateTime: "5/6/2022 06:33",
     },
     {
       vid: 2,
       photo: "",
-      role: "Maid",
-      reason: "Household",
+      role: "Guest",
+      reason: "Guest",
       visitorName: "Sanket Khardekar",
       dateTime: "5/6/2022 06:33",
     },
     {
       vid: 3,
-      photo: "",
+
       role: "Maid",
       reason: "Household",
       visitorName: "Shital Bhosale",
@@ -69,17 +70,17 @@ const IncomingRequestScreen = ({ route, navigation }) => {
     {
       vid: 4,
       photo: "",
-      role: "Maid",
-      reason: "Household",
-      visitorName: "Shital Bhosale",
+      role: "Courier Boy",
+      reason: "Courier Boy",
+      visitorName: "Chanakya Lahiri",
       dateTime: "5/6/2022 06:33",
     },
     {
       vid: 5,
       photo: "",
-      role: "Maid",
-      reason: "Household",
-      visitorName: "Shital Bhosale",
+      role: "Guest",
+      reason: "Guest",
+      visitorName: "Shivani Shevale",
       dateTime: "5/6/2022 06:33",
     },
   ];
