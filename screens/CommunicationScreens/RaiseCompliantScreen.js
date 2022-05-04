@@ -1,12 +1,14 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   View,
   SafeAreaView,
   Text,
+  Modal,
   TouchableOpacity,
   StyleSheet,
   FlatList,
 } from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { Button, Card, Title, Paragraph } from "react-native-paper";
 
 const Complaints = [
@@ -24,8 +26,8 @@ const Complaints = [
   {
     id: 2,
     memberName: "Ram Deshpande",
-    reason: "Water Problem",
-    description: "Water Problem",
+    reason: "Electricity Problem",
+    description: "Electricity Problem",
     date: "12/5/2022",
     time: "9 PM",
     photo: {
@@ -78,6 +80,11 @@ const Complaints = [
   },
 ];
 const RaiseComplaintScreen = () => {
+  const [visible, setVisible] = useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -85,7 +92,7 @@ const RaiseComplaintScreen = () => {
           icon="plus"
           color="#FF85B3"
           mode="contained"
-          onPress={() => console.log("Pressed")}
+          onPress={showModal}
         >
           Raise Complaint
         </Button>
@@ -94,6 +101,7 @@ const RaiseComplaintScreen = () => {
       <View style={{ flex: 1, padding: 10 }}>
         <FlatList
           data={Complaints}
+          keyExtractor={(item, index) => item.id}
           renderItem={(itemData) => (
             <TouchableOpacity>
               <Card style={styles.Card}>
@@ -112,13 +120,42 @@ const RaiseComplaintScreen = () => {
                     </View>
                   </View>
                   <View>
-                    
+                    <Title>{itemData.item.reason}</Title>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View>
+                      <Paragraph>{itemData.item.description}</Paragraph>
+                    </View>
+                    <View>
+                      <AntDesign
+                        name="delete"
+                        size={30}
+                        color="#000"
+                        onPress={() => {
+                          console.log("Hii");
+                        }}
+                      />
+                    </View>
                   </View>
                 </Card.Content>
               </Card>
             </TouchableOpacity>
           )}
         />
+      </View>
+      <View style={styles.modalContainer}>
+        <Modal animationType="slide" transparent={true} visible={visible}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -127,21 +164,46 @@ const RaiseComplaintScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
   },
   buttonContainer: {
+    marginTop: 10,
     alignSelf: "center",
     color: "#FF85B3",
     width: 200,
   },
   Card: {
     margin: 5,
-    borderRadius: 10,
+    borderRadius: 8,
     backgroundColor: "#EADEDE",
     justifyContent: "space-between",
     elevation: 5,
     shadowColor: "black",
     shadowOpacity: 0.26,
+  },
+  modalContainer: {
+   
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 export default RaiseComplaintScreen;

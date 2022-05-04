@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, FlatList, Modal, Image } from "react-native";
-import { List, Card, Button, TextInput } from "react-native-paper";
+import { List, Card, Button, TextInput} from "react-native-paper";
 
 const IncomingRequestScreen = ({ route, navigation }) => {
   // const { data, finalVisitorArray } = route.params;
