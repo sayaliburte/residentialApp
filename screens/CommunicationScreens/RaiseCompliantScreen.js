@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
   View,
-  SafeAreaView,
   Text,
   Modal,
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  TextInput,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { Button, Card, Title, Paragraph } from "react-native-paper";
@@ -15,6 +15,7 @@ const Complaints = [
   {
     id: 1,
     memberName: "Rahul Deshpande",
+    flatNo:301,
     reason: "Water Problem",
     description: "Water Problem at Flat No:343",
     date: "11/5/2022",
@@ -26,6 +27,7 @@ const Complaints = [
   {
     id: 2,
     memberName: "Ram Deshpande",
+    flatNo:304,
     reason: "Electricity Problem",
     description: "Electricity Problem",
     date: "12/5/2022",
@@ -37,6 +39,7 @@ const Complaints = [
   {
     id: 3,
     memberName: "Ram Deshpande",
+    flatNo:309,
     reason: "Water Problem",
     description: "Water Problem",
     date: "12/5/2022",
@@ -48,6 +51,7 @@ const Complaints = [
   {
     id: 4,
     memberName: "Chanakya Lahiri",
+    flatNo:201,
     reason: "Garbage Problem",
     description: "Garbage Problem",
     date: "20/5/2022",
@@ -59,6 +63,7 @@ const Complaints = [
   {
     id: 5,
     memberName: "Snehal Salunke",
+    flatNo:204,
     reason: "Water Problem",
     description: "Water Problem",
     date: "10/5/2022",
@@ -70,6 +75,7 @@ const Complaints = [
   {
     id: 6,
     memberName: "Pradip Baviskar",
+    flatNo:203,
     reason: "Light Problem",
     description: "Light Problem",
     date: "6/5/2022",
@@ -79,7 +85,8 @@ const Complaints = [
     },
   },
 ];
-const RaiseComplaintScreen = () => {
+
+const RaiseComplaintScreen = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -89,6 +96,7 @@ const RaiseComplaintScreen = () => {
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <Button
+          style={{ borderRadius: 13 }}
           icon="plus"
           color="#FF85B3"
           mode="contained"
@@ -103,7 +111,17 @@ const RaiseComplaintScreen = () => {
           data={Complaints}
           keyExtractor={(item, index) => item.id}
           renderItem={(itemData) => (
-            <TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => {
+                navigation.navigate("DetailView", {
+                  date: itemData.item.date,
+                  flatNo: itemData.item.flatNo,
+                  reason: itemData.item.memberName,
+                  memberName:itemData.item.reason,
+                  photo:itemData.item.photo
+                });
+              }}
+            >
               <Card style={styles.Card}>
                 <Card.Content>
                   <View
@@ -148,15 +166,58 @@ const RaiseComplaintScreen = () => {
           )}
         />
       </View>
-      <View style={styles.modalContainer}>
-        <Modal animationType="slide" transparent={true} visible={visible}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
+      <Modal animationType="slide" transparent={true} visible={visible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <View
+              style={{ backgroundColor: "#FF85B3", justifyContent: "center" }}
+            >
+              <Text>Raise Complaints Here</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.modalText}>Name:</Text>
+              <TextInput style={styles.textInput} />
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.modalText}>Flat No:</Text>
+              <TextInput style={styles.textInput} />
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.modalText}>Reason:</Text>
+              <TextInput style={styles.textInput} />
+            </View>
+            <View style={{ margin: 5 }}>
+              <TextInput
+                style={{
+                  borderBottomColor: "black",
+                  borderWidth: 1,
+                  height: 90,
+                }}
+              ></TextInput>
+            </View>
+            <View style={{ margin: 10 }}>
+              <Button
+                icon="plus"
+                color="#FF85B3"
+                mode="contained"
+                onPress={() => {}}
+              >
+                Add Photo
+              </Button>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Button color="#FF85B3" mode="contained" onPress={() => {}}>
+                Save
+              </Button>
+              <Button color="#FF85B3" mode="contained" onPress={hideModal}>
+                close
+              </Button>
             </View>
           </View>
-        </Modal>
-      </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -166,7 +227,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    marginTop: 10,
+    margin: 10,
     alignSelf: "center",
     color: "#FF85B3",
     width: 200,
@@ -181,17 +242,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
   },
   modalContainer: {
-   
-    justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    alignSelf: "center",
+    justifyContent: "center",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
+    margin: 90,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -204,6 +263,14 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  textInput: {
+    marginBottom: 20,
+    //paddingHorizontal: 2,
+    //paddingVertical: 5,
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    width: 150,
   },
 });
 export default RaiseComplaintScreen;

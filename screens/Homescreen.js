@@ -4,7 +4,6 @@ import { StyleSheet, View, Dimensions } from "react-native";
 import VisitorList from "../components/Member/VisitorsList";
 import { Button } from "react-native-paper";
 
-import BannerComponent from "../components/UI/BannerComponent";
 const { width, height } = Dimensions.get("window");
 const allVisitorData = [
   {
@@ -16,7 +15,7 @@ const allVisitorData = [
     reason: "Guest",
     visitorName: "Sayali Burte",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"accepted"
+    requestStatus: "accepted",
   },
   {
     vid: 2,
@@ -25,7 +24,7 @@ const allVisitorData = [
     reason: "Guest",
     visitorName: "Sanket Khardekar",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"accepted"
+    requestStatus: "accepted",
   },
   {
     vid: 3,
@@ -34,7 +33,7 @@ const allVisitorData = [
     reason: "Household",
     visitorName: "Shital Bhosale",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"accepted"
+    requestStatus: "accepted",
   },
   {
     vid: 4,
@@ -43,7 +42,7 @@ const allVisitorData = [
     reason: "Courier Boy",
     visitorName: "Chanakya Lahiri",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"accepted"
+    requestStatus: "accepted",
   },
   {
     vid: 5,
@@ -52,7 +51,7 @@ const allVisitorData = [
     reason: "Guest",
     visitorName: "Shivani Shevale",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"decline"
+    requestStatus: "decline",
   },
   {
     vid: 6,
@@ -61,7 +60,7 @@ const allVisitorData = [
     reason: "Guest",
     visitorName: "Snehal Salunkhe",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"decline"
+    requestStatus: "decline",
   },
   {
     vid: 7,
@@ -70,7 +69,7 @@ const allVisitorData = [
     reason: "Household",
     visitorName: "Samiksha Gurav",
     dateTime: "5/6/2022 06:33",
-    requestStatus:"decline"
+    requestStatus: "decline",
   },
 ];
 
@@ -100,8 +99,10 @@ const Homescreen = ({ navigation }) => {
     },
   ];
 
-  const acceptedVisitorList=allVisitorData.filter(v=>v.requestStatus==="accepted");
- 
+  const acceptedVisitorList = allVisitorData.filter(
+    (v) => v.requestStatus === "accepted"
+  );
+
   return (
     <View style={{ flexDirection: "column" }}>
       <View style={styles.visitorCardContainer}>

@@ -17,6 +17,7 @@ import PostInvitation from "../screens/CommunicationScreens/PostInvitation";
 import NoticeBoard from "../screens/CommunicationScreens/NoticeBoard";
 import ViewMaintenanceStatus from "../screens/CommunicationScreens/ViewMaintenanceStatus";
 import ChangeHomeAvailableStatus from "../screens/CommunicationScreens/ChangeHomeAvailableStatus";
+import DetailViewOfScreens from '../components/UI/DetailViewOfScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -40,8 +41,9 @@ const Stacks = () => {
         name="RaiseComplaintScreen"
         component={RaiseComplaintScreen}
       />
-
+   
       <Stack.Screen name="PostNewIdeas" component={PostNewIdeas} />
+      <Stack.Screen name="DetailView" component={DetailViewOfScreens} />
 
       <Stack.Screen
         name="HomeCareContactList"
@@ -49,8 +51,14 @@ const Stacks = () => {
       />
       <Stack.Screen name="PostInvitation" component={PostInvitation} />
       <Stack.Screen name="NoticeBoard" component={NoticeBoard} />
-      <Stack.Screen name="ViewMaintenanceStatus" component={ViewMaintenanceStatus} />
-      <Stack.Screen name="ChangeHomeAvailableStatus" component={ChangeHomeAvailableStatus} />
+      <Stack.Screen
+        name="ViewMaintenanceStatus"
+        component={ViewMaintenanceStatus}
+      />
+      <Stack.Screen
+        name="ChangeHomeAvailableStatus"
+        component={ChangeHomeAvailableStatus}
+      />
     </Stack.Navigator>
   );
 };
