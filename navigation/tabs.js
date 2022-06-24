@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/Homescreen";
 
@@ -15,12 +14,77 @@ import PostNewIdeas from "../screens/CommunicationScreens/PostNewIdeas";
 import HomeCareContactList from "../screens/CommunicationScreens/HomeCareContactList";
 import PostInvitation from "../screens/CommunicationScreens/PostInvitation";
 import NoticeBoard from "../screens/CommunicationScreens/NoticeBoard";
-import ViewMaintenanceStatus from "../screens/CommunicationScreens/ViewMaintenanceStatus";
-import ChangeHomeAvailableStatus from "../screens/CommunicationScreens/ChangeHomeAvailableStatus";
-import DetailViewOfScreens from '../components/UI/DetailViewOfScreen';
+import AddMaintenanceDetails from "../screens/CommunicationScreens/AddMaintenanceDetails";
+import MemberProfileScreen from "../screens/MemberProfileScreen";
+import DetailViewOfScreens from "../components/UI/DetailViewOfScreen";
+import ViewInvitationPhoto from "../screens/CommunicationScreens/ViewInvitationPhoto";
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const HomeScreenStack = createNativeStackNavigator();
+const IncomingRequestScreenStack = createNativeStackNavigator();
+const HistoryStack = createNativeStackNavigator();
+const HomeScreens = () => {
+  return (
+    <HomeScreenStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#8100ff",
+        },
+        headerTintColor: "white",
+      }}
+    >
+      <HomeScreenStack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{}}
+      />
+      <HomeScreenStack.Screen
+        name="MemberProfile"
+        component={MemberProfileScreen}
+        options={{}}
+      />
+    </HomeScreenStack.Navigator>
+  );
+};
 
+const IncomingRequestScreens = () => {
+  return (
+    <IncomingRequestScreenStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#8100ff",
+        },
+        headerTintColor: "white",
+      }}
+    >
+      <IncomingRequestScreenStack.Screen
+        name="IncomingRequest"
+        component={IncomingRequestScreen}
+        options={{}}
+      />
+    </IncomingRequestScreenStack.Navigator>
+  );
+};
+
+const HistoryScreens = () => {
+  return (
+    <HistoryStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#8100ff",
+        },
+        headerTintColor: "white",
+      }}
+    >
+      <HistoryStack.Screen
+        name="HistoryScreens"
+        component={History}
+        options={{}}
+      />
+    </HistoryStack.Navigator>
+  );
+};
 const Stacks = () => {
   return (
     <Stack.Navigator
@@ -41,23 +105,20 @@ const Stacks = () => {
         name="RaiseComplaintScreen"
         component={RaiseComplaintScreen}
       />
-   
+
       <Stack.Screen name="PostNewIdeas" component={PostNewIdeas} />
       <Stack.Screen name="DetailView" component={DetailViewOfScreens} />
-
+      <Stack.Screen name="InvitationPhoto" component={ViewInvitationPhoto} />
       <Stack.Screen
         name="HomeCareContactList"
         component={HomeCareContactList}
       />
       <Stack.Screen name="PostInvitation" component={PostInvitation} />
+      <Stack.Screen name="MemberProfile" component={MemberProfileScreen} />
       <Stack.Screen name="NoticeBoard" component={NoticeBoard} />
       <Stack.Screen
-        name="ViewMaintenanceStatus"
-        component={ViewMaintenanceStatus}
-      />
-      <Stack.Screen
-        name="ChangeHomeAvailableStatus"
-        component={ChangeHomeAvailableStatus}
+        name="AddMaintenanceDetails"
+        component={AddMaintenanceDetails}
       />
     </Stack.Navigator>
   );
@@ -75,12 +136,13 @@ const Tabs = () => {
         headerStyle: {
           backgroundColor: "#8100ff",
         },
+        headerShown: false,
         headerTintColor: "white",
       }}
     >
       <Tab.Screen
-        name=" Welcome Sayali"
-        component={HomeScreen}
+        name="Welcome Sayali"
+        component={HomeScreens}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
@@ -89,7 +151,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="Incoming Visitor Request List"
-        component={IncomingRequestScreen}
+        component={IncomingRequestScreens}
         options={{
           tabBarBadge: 5,
           tabBarIcon: ({ color, size }) => (
@@ -113,7 +175,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="History"
-        component={History}
+        component={HistoryScreens}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="history" color={color} size={size} />

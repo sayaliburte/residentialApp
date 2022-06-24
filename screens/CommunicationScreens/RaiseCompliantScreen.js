@@ -174,14 +174,8 @@ const RaiseComplaintScreen = ({ navigation }) => {
             >
               <Text>Raise Complaints Here</Text>
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.modalText}>Name:</Text>
-              <TextInput style={styles.textInput} />
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.modalText}>Flat No:</Text>
-              <TextInput style={styles.textInput} />
-            </View>
+           
+            
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.modalText}>Reason:</Text>
               <TextInput style={styles.textInput} />

@@ -9,7 +9,7 @@ import {
   Dimensions,
   TextInput,
 } from "react-native";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
+import { Button, Card, Title, Paragraph, Dialog } from "react-native-paper";
 import AntDesign from "react-native-vector-icons/AntDesign";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -177,7 +177,13 @@ const PostNewIdeas = ({ navigation }) => {
                 ADD PHOTO
               </Button>
             </View>
-            <View style={{ flexDirection: "row",justifyContent:"space-between",margin:10 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                margin: 10,
+              }}
+            >
               <Button
                 style={{ borderRadius: 13 }}
                 icon=""
@@ -194,7 +200,7 @@ const PostNewIdeas = ({ navigation }) => {
                 mode="contained"
                 onPress={hideModal}
               >
-               CANCEL
+                CANCEL
               </Button>
             </View>
           </View>

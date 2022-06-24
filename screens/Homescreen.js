@@ -5,6 +5,9 @@ import VisitorList from "../components/Member/VisitorsList";
 import { Button } from "react-native-paper";
 
 const { width, height } = Dimensions.get("window");
+import { useDispatch } from "react-redux";
+import * as authActions from "../store/actions/auth";
+
 const allVisitorData = [
   {
     vid: 1,
@@ -74,21 +77,32 @@ const allVisitorData = [
 ];
 
 const Homescreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
+        <View style={{flexDirection:"row"}}>
         <Button
           icon="account-box"
           labelStyle={{ fontSize: 27 }}
-          onPress={() => console.log("Pressed")}
+          onPress={() => {navigation.navigate('MemberProfile')}}
           title=""
           color="white"
         />
+           <Button
+          icon="logout"
+          labelStyle={{ fontSize: 27 }}
+          onPress={()=>{dispatch(authActions.logout())}}
+          title=""
+          color="white"
+        />
+     
+     </View>
       ),
     });
   }, [navigation]);
   const [visible, setVisible] = useState(true);
-  const actions = [
+ /* const actions = [
     {
       label: "View",
       onPress: () => navigation.navigate("IncomingRequestScreen"),
@@ -98,7 +112,7 @@ const Homescreen = ({ navigation }) => {
       onPress: () => setVisible(false),
     },
   ];
-
+*/
   const acceptedVisitorList = allVisitorData.filter(
     (v) => v.requestStatus === "accepted"
   );

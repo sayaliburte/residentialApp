@@ -40,18 +40,9 @@ const communicationContent = [
   },
   {
     id: 6,
-    screenName: "View Maintenance Status",
+    screenName: "Add Maintenance Details",
     icon: <MaterialCommunityIcons name="billboard" size={40} color="#000" />,
-    screen: "ViewMaintenanceStatus",
-  },
-  {
-    id: 7,
-    screenName: "Change Status(Available at Home/NA)",
-    icon: <AntDesign name="home" size={40} color="#000" />,
-    screen: "ChangeHomeAvailableStatus",
-  },
-  {
-    id: "",
+    screen: "AddMaintenanceDetails",
   },
 ];
 const Communication = ({ navigation }) => {

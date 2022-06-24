@@ -16,9 +16,7 @@ const GridTile = (props) => {
 
   return (
     <View style={classes}>
-      {props.arrayIndex.id == "" ? (
-        <View></View>
-      ) : (
+     
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={props.onSelect}
@@ -41,7 +39,7 @@ const GridTile = (props) => {
             </View>
           </View>
         </TouchableOpacity>
-      )}
+    
     </View>
   );
 };
