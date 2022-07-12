@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
 import {
-  View,
-  FlatList,
   StyleSheet,
   Text,
+  View,
+  Alert,
+  ScrollView,
+  FlatList,
+  Linking,
+  Dimensions,
   TouchableOpacity,
   Modal,
-  Dimensions,
-  TextInput,
-  ScrollView,
-  Alert,
 } from "react-native";
+import { List, Card, Button, Paragraph } from "react-native-paper";
+import * as authActions from "../../store/actions/auth";
+import * as memberActions from "../../store/actions/member";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Card, Title, Paragraph, Dialog } from "react-native-paper";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Input from "../../components/UI/Input";
 import ImagePicker from "../../components/UI/ImagePicker";
-import * as communicationActions from "../../store/actions/communication";
-import NewIdeaItem from "../../components/UI/NewIdeaItem";
+import * as visitorInfoActions from "../../store/actions/VisitorInfo";
+
 const width = Dimensions.get("window").width;
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
@@ -40,24 +43,17 @@ const formReducer = (state, action) => {
   }
   return state;
 };
+
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
-const PostNewIdeas = ({ navigation }) => {
+const HomeScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState();
   const [uploading, setUploading] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const memberData = useSelector((state) => state.member.loggedInMember);
-
-  const communicationData = useSelector(
-    (state) => state.communication.communications
-  );
-  const filteredArray = communicationData.filter((data) => {
-    return data.communication_type === "postIdea" && data.active === true;
-  });
+  const [visible, setVisible] = useState(false);
+  const [selectedMemberData, setSelectedMemberData] = useState({});
+  const [success,setSuccess]=useState(false);
   useEffect(() => {
     if (error) {
       Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
@@ -65,15 +61,16 @@ const PostNewIdeas = ({ navigation }) => {
   }, [error]);
   const initialReducerState = {
     inputValues: {
+      name: "",
       reason: "",
-      title: "",
     },
     inputValidities: {
+      name: false,
       reason: false,
-      title: false,
     },
     formIsValid: false,
   };
+
   const [formState, dispatchFormState] = useReducer(
     formReducer,
     initialReducerState
@@ -89,70 +86,125 @@ const PostNewIdeas = ({ navigation }) => {
     },
     [dispatchFormState]
   );
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+
   const imageTakenHandler = (imagePath, isUploading) => {
     setSelectedImage(imagePath);
     setUploading(isUploading);
   };
+
   const submitHandler = () => {
     try {
       dispatch(
-        communicationActions.add_communication({
-          date: new Date().toISOString(),
-          flatno: memberData.flatNumber,
-          userId: memberData.userId,
-          memberName: memberData.name,
-          communication_type: "postIdea",
+        visitorInfoActions.add_visitor({
+          visitorName: formState.inputValues.name,
+          visitorPhoto_url: selectedImage,
+          visitingReason: formState.inputValues.reason,
+          status: "Pending",
+          flatno: selectedMemberData.flatNumber,
+          memberUserId: selectedMemberData.userId,
+          memberName: selectedMemberData.name,
           active: true,
-          photo_url: selectedImage,
-          title: formState.inputValues.title,
-          reason: formState.inputValues.reason,
-          like: [],
         })
       );
+      setSuccess(true);
     } catch (err) {
+      console.log(err);
       setError(err.message);
       setIsLoading(false);
     }
     hideModal();
   };
+  const allMemberData = useSelector((state) => state.member.members);
+  const filteredMembers = allMemberData.filter(
+    (member) =>
+      member.memberType === "member" && member.availabilityStatus === true
+  );
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <Button
+            icon="logout"
+            labelStyle={{ fontSize: 27 }}
+            onPress={() => {
+              dispatch(memberActions.clearLoggedInUser());
+              dispatch(authActions.logout());
+            }}
+            title=""
+            color="white"
+          />
+        </View>
+      ),
+    });
+  }, [navigation]);
+  const showModal = (item) => {
+    setSelectedMemberData(item);
+    setVisible(true);
+  };
+  const hideModal = () => setVisible(false);
+
+  const call = (no) => {
+    let phoneNumber = "";
+    phoneNumber = `tel:${no}`;
+    Linking.openURL(phoneNumber);
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <Button
-          style={{ borderRadius: 13 }}
-          icon="plus"
-          color="#8CC0DE"
-          mode="contained"
-          onPress={showModal}
-        >
-          POST NEW IDEAS
-        </Button>
-      </View>
-      <View style={{ paddingBottom: 60 }}>
+      <View>
         <FlatList
-          data={filteredArray}
-          keyExtractor={(item) => item.key}
+          data={filteredMembers}
+          keyExtractor={(item, index) => item.key}
           renderItem={(itemData) => {
             return (
-              <NewIdeaItem
-                mydate={itemData.item.date}
-                id={itemData.item.key}
-                memberName={itemData.item.memberName}
-                title={itemData.item.title}
-                memberUserId={memberData.userId}
-                communicationUserId={itemData.item.userId}
-                onSelect={() => {
-                  navigation.navigate("POSTEDIDEADETAIL", {
-                    newPostkey: itemData.item.key,
-                  });
-                }}
-              />
+              <Card
+                style={itemData.index % 2 === 0 ? styles.Card : styles.Card1}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Paragraph style={{ color: "white" }}>
+                    {itemData.item.name.toUpperCase()}
+                  </Paragraph>
+                  <FontAwesome5
+                    name="phone"
+                    size={27}
+                    color="white"
+                    onPress={call.bind(this, itemData.item.phone)}
+                  />
+                </View>
+                <View
+                  style={{
+                    alignContent: "center",
+                    justifyContent: "center",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Paragraph style={{ color: "white" }}>
+                    Flat No.:{itemData.item.flatNumber}
+                  </Paragraph>
+                </View>
+                <View style={{ margin: 5, borderColor: "white" }}>
+                  <Button
+                    style={{
+                      borderwidth: 80,
+                      borderRadius: 20,
+                    }}
+                    labelStyle={{ color: "white" }}
+                    color="transparent"
+                    mode="contained"
+                    onPress={showModal.bind(this, itemData.item)}
+                  >
+                    Add Visitor
+                  </Button>
+                </View>
+              </Card>
             );
           }}
-        ></FlatList>
+        />
       </View>
       <View>
         <Modal animationType="slide" transparent={true} visible={visible}>
@@ -161,22 +213,23 @@ const PostNewIdeas = ({ navigation }) => {
               <ScrollView>
                 <View
                   style={{
-                    backgroundColor: "#8CC0DE",
+                    backgroundColor: "#5D54A4",
                     justifyContent: "center",
                   }}
                 >
-                  <Text style={{ alignSelf: "center" }}>POST NEW IDEAS</Text>
+                  <Text style={{ alignSelf: "center", color: "white" }}>
+                    FILL VISITOR DATA
+                  </Text>
                 </View>
                 <View style={{ marginBottom: 10 }}>
                   <Input
-                    id="title"
-                    label="Title"
+                    id="name"
+                    label="Visitor Name"
                     keyboardType="default"
                     name
                     required
-                    maxLength={30}
                     autoCapitalize="none"
-                    errorText="Please enter title"
+                    errorText="Please enter Visitor Name"
                     onInputChange={inputChangeHandler}
                     initialValue=""
                   />
@@ -184,20 +237,20 @@ const PostNewIdeas = ({ navigation }) => {
                 <View style={{ marginBottom: 10 }}>
                   <Input
                     id="reason"
-                    label="Reason"
+                    label="Visiting reason"
                     keyboardType="default"
-                    reason
-                    minLength={20}
                     required
                     autoCapitalize="none"
-                    errorText="Please enter reason"
+                    errorText="Please enter Visiting Reason"
                     onInputChange={inputChangeHandler}
                     initialValue=""
                   />
                 </View>
+
                 <View>
                   <ImagePicker onImageTake={imageTakenHandler} />
                 </View>
+
                 <View
                   style={{
                     flexDirection: "row",
@@ -208,7 +261,7 @@ const PostNewIdeas = ({ navigation }) => {
                   <View style={{ flex: 1, marginHorizontal: 5 }}>
                     <Button
                       disabled={uploading || !formState.formIsValid}
-                      color="#8CC0DE"
+                      color="#5D54A4"
                       mode="contained"
                       onPress={submitHandler}
                     >
@@ -217,7 +270,7 @@ const PostNewIdeas = ({ navigation }) => {
                   </View>
                   <View style={{ flex: 1, marginHorizontal: 5 }}>
                     <Button
-                      color="#8CC0DE"
+                      color="#5D54A4"
                       mode="contained"
                       onPress={hideModal}
                     >
@@ -233,23 +286,35 @@ const PostNewIdeas = ({ navigation }) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  buttonContainer: {
-    alignItems: "center",
+    alignContent: "center",
     justifyContent: "center",
-    margin: 10,
   },
-  card: {
+
+  Card: {
     margin: 5,
-    borderRadius: 10,
-    backgroundColor: "#F4BFBF",
-    justifyContent: "space-between",
+    padding: 15,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: "#5D54A4",
+
     elevation: 5,
     shadowColor: "black",
     shadowOpacity: 0.26,
+  },
+  Card1: {
+    margin: 5,
+    padding: 10,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: "#407088",
+
+    elevation: 20,
+    shadowColor: "black",
+    shadowOpacity: 0.3,
   },
   modalContainer: {
     alignSelf: "center",
@@ -273,11 +338,5 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  textInput: {
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    width: 150,
-  },
 });
-
-export default PostNewIdeas;
+export default HomeScreen;

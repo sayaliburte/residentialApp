@@ -20,6 +20,7 @@ const inputReducer = (state, action) => {
   }
 };
 const Input = (props) => {
+  console.log(props.initialValue);
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue ? props.initialValue : "",
     isValid: props.initiallyValid,
@@ -29,7 +30,7 @@ const Input = (props) => {
     const emailRegex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-      const nameRegex=/^[a-zA-Z ]+$/;
+    const nameRegex = /^[a-zA-Z ]+$/;
     let isValid = true;
     if (props.required && text.trim().length === 0) {
       isValid = false;
@@ -40,7 +41,7 @@ const Input = (props) => {
     if (props.min != null && +text < props.min) {
       isValid = false;
     }
-    
+
     if (props.max != null && +text > props.max) {
       isValid = false;
     }
@@ -50,10 +51,10 @@ const Input = (props) => {
     if (props.maxLength != null && text.length > props.maxLength) {
       isValid = false;
     }
-    if(props.name && !nameRegex.test(text))
-    {
-       isValid=false;
+    if (props.name && !nameRegex.test(text)) {
+      isValid = false;
     }
+
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
   const lostFocusHandler = () => {
@@ -68,6 +69,7 @@ const Input = (props) => {
   return (
     <View style={styles.formControl}>
       <Text style={styles.label}>{props.label}</Text>
+
       <TextInput
         {...props}
         style={styles.input}
@@ -75,8 +77,8 @@ const Input = (props) => {
         value={inputState.value}
         onChangeText={textChangeHandler}
         keyboardAppearance="dark"
-        
       />
+
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{props.errorText}</Text>
@@ -89,23 +91,22 @@ const styles = StyleSheet.create({
   formControl: {
     width: "100%",
   },
+  comment: {},
   label: {
-    
     marginVertical: 8,
   },
   input: {
     paddingHorizontal: 2,
-    paddingVertical: 5,
+    paddingVertical: 3,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
   },
-  errorContainer:{
+  errorContainer: {
     marginVertical: 5,
   },
-  errorText:{
-    
-    color:'red',
-    fontSize:13
+  errorText: {
+    color: "red",
+    fontSize: 13,
   },
 });
 export default Input;

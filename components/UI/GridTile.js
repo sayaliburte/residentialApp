@@ -16,18 +16,15 @@ const GridTile = (props) => {
 
   return (
     <View style={classes}>
-     
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={props.onSelect}
-        >
+      {props.arrayIndex.id != "" ? (
+        <TouchableOpacity style={{ flex: 1 }} onPress={props.onSelect}>
           <View
             style={{
               ...styles.container,
               ...{
                 backgroundColor: "#63a4ff",
-                backgroundImage: "linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%)"
-                
+                backgroundImage:
+                  "linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%)",
               },
             }}
           >
@@ -39,7 +36,7 @@ const GridTile = (props) => {
             </View>
           </View>
         </TouchableOpacity>
-    
+      ) : null}
     </View>
   );
 };

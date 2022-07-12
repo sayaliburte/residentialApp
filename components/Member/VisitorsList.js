@@ -30,7 +30,7 @@ const VisitorList = (props) => {
         keyExtractor={(item) => item.vid}
       />
       <Card.Actions>
-        <Button>View More</Button>
+        
       </Card.Actions>
     </Card>
   );

@@ -15,22 +15,22 @@ const NavigationLoader = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    const loadMembers = async () => {
+    setTimeout(() => {
       try {
-        await dispatch(memberActions.fetch_members());
+        dispatch(memberActions.fetch_members());
       } catch (err) {
         console.log(err.message);
       }
       setIsLoading(false);
-    };
-    loadMembers();
+    }, 2000);
   }, [dispatch]);
 
   if (isLoading) {
-    return(
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size="large" />
-    </View>);
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
   return (
     <Fragment>

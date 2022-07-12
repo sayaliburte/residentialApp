@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   View,
   SafeAreaView,
@@ -21,15 +21,17 @@ const ViewInvitationPhoto = ({ navigaton, route }) => {
   let url1 = `${photo}`;
 
   const arr = [{ url: url1 }];
-
+  
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <ImageViewer imageUrls={arr} />
-    </View>
+   
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <ImageViewer imageUrls={arr} />
+      </View>
+  
   );
 };
 

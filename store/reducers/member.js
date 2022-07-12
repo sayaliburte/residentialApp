@@ -1,4 +1,4 @@
-import { ADD_MEMBERS } from "../actions/member";
+import { ADD_MEMBERS, UPDATE_HOMESTATUS, LOGOUT } from "../actions/member";
 import { FETCH_MEMBERS } from "../actions/member";
 import { UPDATE_MEMBERS } from "../actions/member";
 const initialState = {
@@ -24,9 +24,23 @@ export default (state = initialState, action) => {
       return {
         ...state,
         members: state.members.map((member, index) =>
-          index === action.index ? { ...member,...action.data } : member
+          index === action.index ? { ...member, ...action.data } : member
         ),
-        loggedInMember:{...state.loggedInMember,...action.data}
+        loggedInMember: { ...state.loggedInMember, ...action.data },
+      };
+
+    case UPDATE_HOMESTATUS:
+      return {
+        ...state,
+        members: state.members.map((member) =>
+          member.key === action.key ? { ...member, ...action.data } : member
+        ),
+        loggedInMember: { ...state.loggedInMember, ...action.data },
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        loggedInMember: null,
       };
   }
   return state;

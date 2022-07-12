@@ -117,7 +117,7 @@ const AuthScreen = () => {
           availabilityStatus: true,
           memberValidity: false,
           pushNotificationToken: "",
-          maintenanceStatus: false,
+         
         })
       );
     }
@@ -179,8 +179,8 @@ const AuthScreen = () => {
                   id="flatno"
                   label="Flat Number"
                   keyboardType="number-pad"
-                  min={300}
-                  max={315}
+                  min={101}
+                  max={110}
                   required
                   autoCapitalize="none"
                   errorText="Please enter a valid Flat Number"

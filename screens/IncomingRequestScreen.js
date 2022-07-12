@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, FlatList, Modal, Image } from "react-native";
-import { List, Card, Button, TextInput} from "react-native-paper";
+import { List, Card, Button, TextInput } from "react-native-paper";
 
 const IncomingRequestScreen = ({ route, navigation }) => {
   // const { data, finalVisitorArray } = route.params;
@@ -89,14 +89,14 @@ const IncomingRequestScreen = ({ route, navigation }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#f8ceec",
-        backgroundImage: "linear-gradient(315deg, #f8ceec 0%, #a88beb 74%)",
       }}
     >
       <FlatList
         data={visitorRequest}
         renderItem={(itemData) => (
-          <Card style={{ margin: 4, borderRadius: 30 }}>
+          <Card
+            style={{ margin: 8, borderRadius: 15, backgroundColor: "#F6E7D8" }}
+          >
             <View style={{ flexDirection: "row" }}>
               <View style={{ flex: 1 }}>
                 {itemData.item.photo ? (
@@ -140,14 +140,14 @@ const IncomingRequestScreen = ({ route, navigation }) => {
               >
                 <Button
                   title=""
-                  color="#8F00FF"
+                  color="#748DA6"
                   icon="check-circle"
                   labelStyle={{ fontSize: 46 }}
                   //  onPress={/*handleAddVisitor.bind(this, itemData.item.vid)*/}
                 />
                 <Button
                   title=""
-                  color="tomato"
+                  color="#F24C4C"
                   icon="delete-forever"
                   labelStyle={{ fontSize: 50 }}
                   onPress={() => {

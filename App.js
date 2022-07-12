@@ -5,14 +5,17 @@ import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 import authReducer from "./store/reducers/auth";
 import memberReducer from "./store/reducers/member";
+import communicationReducer from "./store/reducers/communication";
 import { StyleSheet, Touchable, Text, View, Image } from "react-native";
 import AppNavigator from "./navigation/AppNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Tabs from "./navigation/tabs";
+
+import Communication from "./screens/communication";
 
 const rootReducer = combineReducers({
   auth: authReducer,
- member:memberReducer
+  member: memberReducer,
+  communication: communicationReducer,
 });
 
 const store = configureStore(

@@ -1,13 +1,20 @@
-import React, { useState, useLayoutEffect } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import React, { useState, useLayoutEffect, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Switch,
+  Text,
+  Alert,
+} from "react-native";
 
 import VisitorList from "../components/Member/VisitorsList";
-import { Button } from "react-native-paper";
-
+import { useSelector, useDispatch } from "react-redux";
+import { List, Card, Button } from "react-native-paper";
 const { width, height } = Dimensions.get("window");
-import { useDispatch } from "react-redux";
-import * as authActions from "../store/actions/auth";
 
+import * as authActions from "../store/actions/auth";
+import * as memberActions from "../store/actions/member";
 const allVisitorData = [
   {
     vid: 1,
@@ -77,48 +84,66 @@ const allVisitorData = [
 ];
 
 const Homescreen = ({ navigation }) => {
+  const memberData = useSelector((state) => state.member.loggedInMember);
+
+  const [switchValue, setSwitchValue] = useState(memberData.availabilityStatus);
+  const [error, setError] = useState();
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
+
+  const toggleSwitch = () => {
+    try {
+      dispatch(
+        memberActions.update_homeStatus(
+          { availabilityStatus: !switchValue },
+          memberData.key
+        )
+      );
+      setSwitchValue(!switchValue);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={{flexDirection:"row"}}>
-        <Button
-          icon="account-box"
-          labelStyle={{ fontSize: 27 }}
-          onPress={() => {navigation.navigate('MemberProfile')}}
-          title=""
-          color="white"
-        />
-           <Button
-          icon="logout"
-          labelStyle={{ fontSize: 27 }}
-          onPress={()=>{dispatch(authActions.logout())}}
-          title=""
-          color="white"
-        />
-     
-     </View>
+        <View style={{ flexDirection: "row" }}>
+          <Button
+            icon="account-box"
+            labelStyle={{ fontSize: 27 }}
+            onPress={() => {
+              navigation.navigate("MemberProfile");
+            }}
+            title=""
+            color="white"
+          />
+          <Button
+            icon="logout"
+            labelStyle={{ fontSize: 27 }}
+            onPress={() => {
+              dispatch(authActions.logout());
+            }}
+            title=""
+            color="white"
+          />
+        </View>
       ),
     });
   }, [navigation]);
-  const [visible, setVisible] = useState(true);
- /* const actions = [
-    {
-      label: "View",
-      onPress: () => navigation.navigate("IncomingRequestScreen"),
-    },
-    {
-      label: "Dismiss",
-      onPress: () => setVisible(false),
-    },
-  ];
-*/
+
   const acceptedVisitorList = allVisitorData.filter(
     (v) => v.requestStatus === "accepted"
   );
-
   return (
     <View style={{ flexDirection: "column" }}>
+      <View style={styles.switchView}>
+        <Text style={{ color: "white", fontSize: 17 }}>Availble At Home?</Text>
+        <Switch onValueChange={toggleSwitch} value={switchValue} />
+      </View>
       <View style={styles.visitorCardContainer}>
         <VisitorList data={acceptedVisitorList} />
       </View>
@@ -129,8 +154,14 @@ const Homescreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   visitorCardContainer: {
     height: height / 2,
-    paddingTop: height * 0.1,
+    paddingTop: height * 0.04,
     flexDirection: "column",
+    alignItems: "center",
+  },
+  switchView: {
+    backgroundColor: "#827397",
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
 });

@@ -1,8 +1,6 @@
-import * as React from "react";
-import { Text, View } from "react-native";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/Homescreen";
-
 import IncomingRequestScreen from "../screens/IncomingRequestScreen";
 import History from "../screens/History";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -16,15 +14,15 @@ import PostInvitation from "../screens/CommunicationScreens/PostInvitation";
 import NoticeBoard from "../screens/CommunicationScreens/NoticeBoard";
 import AddMaintenanceDetails from "../screens/CommunicationScreens/AddMaintenanceDetails";
 import MemberProfileScreen from "../screens/MemberProfileScreen";
-import DetailViewOfScreens from "../components/UI/DetailViewOfScreen";
+import DetailViewOfRaiseComplaint from "../screens/CommunicationScreens/DetailViewOfRaiseComplaint";
 import ViewInvitationPhoto from "../screens/CommunicationScreens/ViewInvitationPhoto";
-
+import DetailViewofPostNewIdea from "../screens/CommunicationScreens/DetailViewOfPostNewIdea";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const HomeScreenStack = createNativeStackNavigator();
 const IncomingRequestScreenStack = createNativeStackNavigator();
 const HistoryStack = createNativeStackNavigator();
-const HomeScreens = () => {
+const HomeScreens = ({ navigation }) => {
   return (
     <HomeScreenStack.Navigator
       screenOptions={{
@@ -105,9 +103,15 @@ const Stacks = () => {
         name="RaiseComplaintScreen"
         component={RaiseComplaintScreen}
       />
-
+      <Stack.Screen
+        name="DetailViewOfRaiseComplaint"
+        component={DetailViewOfRaiseComplaint}
+      />
       <Stack.Screen name="PostNewIdeas" component={PostNewIdeas} />
-      <Stack.Screen name="DetailView" component={DetailViewOfScreens} />
+      <Stack.Screen
+        name="POSTEDIDEADETAIL"
+        component={DetailViewofPostNewIdea}
+      />
       <Stack.Screen name="InvitationPhoto" component={ViewInvitationPhoto} />
       <Stack.Screen
         name="HomeCareContactList"
@@ -128,6 +132,7 @@ const Tabs = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: "#8100ff",
         },

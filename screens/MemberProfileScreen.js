@@ -50,7 +50,7 @@ const formReducer = (state, action) => {
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 const MemberProfileScreen = () => {
   const memberData = useSelector((state) => state.member.loggedInMember);
-  console.log(memberData);
+  //console.log(memberData);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+
     marginTop: 100,
     elevation: 10,
     shadowColor: "black",

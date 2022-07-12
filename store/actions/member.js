@@ -1,13 +1,45 @@
 export const ADD_MEMBERS = "ADD_MEMBERS";
 export const FETCH_MEMBERS = "FETCH_MEMBERS";
 export const UPDATE_MEMBERS = "UPDATE_MEMBERS";
-
+export const UPDATE_HOMESTATUS = "UPDATE_HOMESTATUS";
+export const LOGOUT="LOGOUT";
+export const update_homeStatus = (data, key) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/members/${key}.json?auth=${token}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      dispatch({
+        type:UPDATE_HOMESTATUS,
+        data: data,
+        key
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
 export const update_members = (data, key) => {
   return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const memberData = getState().member.members;
     try {
       const response = await fetch(
-        `https://rn-residential-app-default-rtdb.firebaseio.com/members/${key}.json`,
+        `https://rn-residential-app-default-rtdb.firebaseio.com/members/${key}.json?auth=${token}`,
         {
           method: "PATCH",
           headers: {
@@ -28,7 +60,7 @@ export const update_members = (data, key) => {
       });
       //console.log("In index", index);
       const resData = await response.json();
-      console.log("res", resData);
+      //  console.log("res", resData);
       dispatch({
         type: UPDATE_MEMBERS,
         data: data,
@@ -109,3 +141,9 @@ export const fetch_members = () => {
     }
   };
 };
+
+export const clearLoggedInUser=()=>{
+  return{
+    type:LOGOUT
+  }
+}
