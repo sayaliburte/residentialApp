@@ -160,7 +160,19 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View
+        style={{
+          width: "100%",
+
+          backgroundColor: "#171717",
+          opacity: 0.8,
+        }}
+      >
+        <Text style={{ margin: 10, alignSelf: "center", color: "white" }}>
+          Available Members List
+        </Text>
+      </View>
+      <View style={{ marginBottom: 40 }}>
         <FlatList
           data={filteredMembers}
           keyExtractor={(item, index) => item.key}
@@ -309,14 +321,13 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignContent: "center",
-    justifyContent: "center",
   },
 
-   Card: {
-    margin: 5,
+  Card: {
+    margin: 3,
+
     padding: 15,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     borderRadius: 8,
     backgroundColor: "#5D54A4",
 
@@ -325,9 +336,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
   },
   Card1: {
-    margin: 5,
+    margin: 3,
     padding: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     borderRadius: 8,
     backgroundColor: "#407088",
 

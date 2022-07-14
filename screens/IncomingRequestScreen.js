@@ -1,242 +1,195 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, Modal, Image } from "react-native";
-import { List, Card, Button, TextInput } from "react-native-paper";
-
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Modal,
+  Image,
+  Text,
+  Alert,
+  ScrollView,
+} from "react-native";
+import {
+  List,
+  Card,
+  Button,
+  TextInput,
+  Paragraph,
+  IconButton,
+} from "react-native-paper";
+import * as visitorInfoActions from "../store/actions/VisitorInfo";
+import { useSelector, useDispatch } from "react-redux";
 const IncomingRequestScreen = ({ route, navigation }) => {
-  // const { data, finalVisitorArray } = route.params;
-  //const [modifiedData, setModifiedData] = useState(data);
-  const [rejectReason, setRejectReason] = useState(false);
-  const [text, setText] = useState("");
-  const [idToReject, setIdToReject] = useState(0);
-  const [refresh, setRefresh] = useState(false);
-  /*useEffect(() => {
-    setRefresh(!refresh)
-  }, [setModifiedData,setRefresh]);
-  const handleDeleteVisitor = () => {
-    const tempdata = modifiedData.filter(
-      (filterData) => filterData.vid === idToReject
+  const dispatch = useDispatch();
+  const [error, setError] = useState();
+  const [visible, setVisible] = useState(false);
+  const memberData = useSelector((state) => state.member.loggedInMember);
+  const allVisitors = useSelector((state) => state.visitors.visitors);
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+  const todayFullDate = new Date();
+  const todayDate = todayFullDate.getDate();
+  const todayMonth = todayFullDate.getMonth() + 1;
+  const todayYear = todayFullDate.getFullYear();
+  const filterData = allVisitors.filter((visitor) => {
+    let date = new Date(visitor.date);
+    let dateDay = date.getDate();
+    let dateMonth = date.getMonth() + 1;
+    let dateYear = date.getFullYear();
+    return (
+      dateDay === todayDate &&
+      todayMonth === dateMonth &&
+      dateYear === todayYear &&
+      visitor.active === true &&
+      visitor.status === "Pending" &&
+      visitor.memberUserId === memberData.userId
     );
-    const t = tempdata.pop();
-
-    const addedData = { ...t, rejectedReason: text };
-
-    finalVisitorArray.push(addedData);
-
-    const deleteData = modifiedData.filter(
-      (filterData) => filterData.vid !== idToReject
-    );
-    console.log(deleteData);
-    setModifiedData(deleteData);
-
-    setText("");
-    setRejectReason(false);
+  });
+  const reversedArray = filterData.reverse();
+  const acceptHandler = (key) => {
+    try {
+      dispatch(visitorInfoActions.accept_Visitor(key));
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
   };
-
-  const handleAddVisitor = (id) => {
-    const tempdata = modifiedData.filter((filterData) => filterData.vid === id);
-    const t = tempdata.pop();
-
-    finalVisitorArray.push(t);background-color: #fad0c4;
-      background-image: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);
-  };*/
-
-  const visitorRequest = [
-    {
-      vid: 1,
-      photo: {
-        uri: "https://images.alphacoders.com/695/thumb-350-695222.jpg",
-      },
-      role: "Guest",
-      reason: "Guest",
-      visitorName: "Sayali Burte",
-      dateTime: "5/6/2022 06:33",
-    },
-    {
-      vid: 2,
-      photo: "",
-      role: "Guest",
-      reason: "Guest",
-      visitorName: "Sanket Khardekar",
-      dateTime: "5/6/2022 06:33",
-    },
-    {
-      vid: 3,
-
-      role: "Maid",
-      reason: "Household",
-      visitorName: "Shital Bhosale",
-      dateTime: "5/6/2022 06:33",
-    },
-    {
-      vid: 4,
-      photo: "",
-      role: "Courier Boy",
-      reason: "Courier Boy",
-      visitorName: "Chanakya Lahiri",
-      dateTime: "5/6/2022 06:33",
-    },
-    {
-      vid: 5,
-      photo: "",
-      role: "Guest",
-      reason: "Guest",
-      visitorName: "Shivani Shevale",
-      dateTime: "5/6/2022 06:33",
-    },
-  ];
-
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <FlatList
-        data={visitorRequest}
-        renderItem={(itemData) => (
-          <Card
-            style={{ margin: 8, borderRadius: 15, backgroundColor: "#F6E7D8" }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <View style={{ flex: 1 }}>
-                {itemData.item.photo ? (
-                  <Image
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: 60,
-                      margin: 6,
-                    }}
-                    source={itemData.item.photo}
-                  />
-                ) : (
-                  <Image
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: 60,
-                      margin: 3,
-                    }}
-                    source={{
-                      uri: "https://spng.subpng.com/20190305/opf/kisspng-computer-icons-portable-network-graphics-clip-art-conference-background-selec-icons-5c7f139f2e4071.9721598415518319671895.jpg",
-                    }}
-                  />
-                )}
-              </View>
-              <View style={{ flex: 4, marginLeft: 40 }}>
-                <List.Item
-                  title={itemData.item.visitorName}
-                  titleNumberOfLines={2}
-                  description={`${itemData.item.role}\n${itemData.item.reason}`}
-                />
-              </View>
-              <View
-                style={{
-                  flex: 3,
-                  justifyContent: "space-around",
-                  alignItems: "baseline",
-                  flexDirection: "row",
-                }}
-              >
-                <Button
-                  title=""
-                  color="#748DA6"
-                  icon="check-circle"
-                  labelStyle={{ fontSize: 46 }}
-                  //  onPress={/*handleAddVisitor.bind(this, itemData.item.vid)*/}
-                />
-                <Button
-                  title=""
-                  color="#F24C4C"
-                  icon="delete-forever"
-                  labelStyle={{ fontSize: 50 }}
-                  onPress={() => {
-                    //   setIdToReject(itemData.item.vid);
-                    // setRejectReason(true);
-                  }}
-                />
-              </View>
-            </View>
-          </Card>
-        )}
-        keyExtractor={(item) => item.vid}
-        // extraData={refresh}
-      />
-
-      <View style={styles.centeredView}>
-        <Modal animationType="slide" transparent={true} visible={rejectReason}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TextInput
-                label="Reason"
-                value={text}
-                style={{ width: "100%", marginBottom: 10 }}
-                onChangeText={(t) => setText(t)}
-              />
-              <View>
-                <Button mode="contained" /*onPress={handleDeleteVisitor}*/>
-                  Submit
-                </Button>
-              </View>
-            </View>
-          </View>
-        </Modal>
+    <View style={styles.container}>
+      <View
+        style={{
+          width: "100%",
+          position: "absolute",
+          backgroundColor: "#171717",
+          opacity: 0.7,
+        }}
+      >
+        <Text style={{ margin: 10, alignSelf: "center", color: "white" }}>
+          Incoming Visitor's Requests
+        </Text>
       </View>
+      {filterData.length !== 0 ? (
+        <View style={{ marginTop: 37 }}>
+          <FlatList
+            data={reversedArray}
+            keyExtractor={(item, index) => item.key}
+            renderItem={(itemData) => {
+              let date = new Date(itemData.item.date);
+              let photo = itemData.item.visitorPhoto_url;
+
+              return (
+                <Card style={styles.Card}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Card
+                      style={{
+                        backgroundColor: "#F3E9DD",
+                        flexDirection: "column",
+                        borderRadius: 15,
+                      }}
+                    >
+                      <View style={{ margin: 7 }}>
+                        <Image
+                          style={{
+                            width: 120,
+                            height: 125,
+                            borderRadius: 10,
+                          }}
+                          source={{ uri: photo }}
+                        />
+
+                        <Paragraph style={{ alignSelf: "center" }}>
+                          {itemData.item.visitorName.toUpperCase()}
+                        </Paragraph>
+                        <Paragraph style={{ alignSelf: "center" }}>
+                          {itemData.item.visitingReason}
+                        </Paragraph>
+                      </View>
+                    </Card>
+                    <ScrollView style={{ margin: 9, marginTop: 30 }}>
+                      <Paragraph style={{ color: "white" }}>
+                        {date.getHours() + ":" + date.getMinutes()}
+                      </Paragraph>
+
+                      <Paragraph style={{ color: "white" }}>
+                        Member:{itemData.item.memberName.toUpperCase()}
+                      </Paragraph>
+
+                      <Paragraph style={{ color: "white" }}>
+                        Flat no.: {itemData.item.flatno}
+                      </Paragraph>
+
+                      <Paragraph style={{ color: "white" }}>
+                        Request Status:{itemData.item.status}
+                      </Paragraph>
+                      {itemData.item.status === "Pending" ? (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <IconButton
+                            icon="account-check-outline"
+                            color="white"
+                            size={35}
+                            onPress={acceptHandler.bind(
+                              this,
+                              itemData.item.key
+                            )}
+                          />
+                          <IconButton
+                            icon="delete-outline"
+                            color="white"
+                            size={32}
+                            onPress={() => {
+                              deleteHandler.bind(this, itemData.item.key);
+                            }}
+                          />
+                        </View>
+                      ) : null}
+                    </ScrollView>
+                  </View>
+                </Card>
+              );
+            }}
+          />
+        </View>
+      ) : (
+        <Card
+          style={{
+            margin: 5,
+            padding: 12,
+            borderRadius: 8,
+            backgroundColor: "#827397",
+            elevation: 5,
+            shadowColor: "black",
+            shadowOpacity: 0.26,
+          }}
+        >
+          <Paragraph style={{ color: "white", alignSelf: "center" }}>
+            No Visitors Added
+          </Paragraph>
+        </Card>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cardTitle: {
-    backgroundColor: "#8100ff",
-    borderRadius: 15,
-  },
-  image: {
+  container: {
     flex: 1,
-    justifyContent: "center",
   },
-
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-
-    width: "70%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+  Card: {
+    margin: 5,
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: "#363062",
     elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
+    shadowColor: "black",
+    shadowOpacity: 0.28,
   },
 });
 

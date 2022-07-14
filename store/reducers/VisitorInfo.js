@@ -2,6 +2,7 @@ import {
   ADD_VISITOR,
   FETCH_VISITORS,
   DELETE_VISITOR,
+  ACCEPT_VISITOR,
 } from "../actions/VisitorInfo";
 
 const initialState = {
@@ -29,6 +30,15 @@ export default (state = initialState, action) => {
           comm.key === action.key ? { ...comm, ...action.data } : comm
         ),
       };
+
+    case ACCEPT_VISITOR: {
+      return {
+        ...state,
+        visitors: state.visitors.map((v) =>
+          v.key === action.key ? { ...v, ...action.data } : v
+        ),
+      };
+    }
   }
   return state;
 };

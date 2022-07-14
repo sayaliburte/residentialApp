@@ -15,23 +15,37 @@ const VisitorList = (props) => {
       />
       <FlatList
         data={props.data}
-        renderItem={(itemData) => (
-          <View>
-            <Card.Content>
-              <List.Item
-                style={{ height: 80 }}
-                left={(props) => <List.Icon {...props} icon="account" />}
-                title={itemData.item.visitorName}
-                description={itemData.item.role + " " + itemData.item.dateTime}
-              />
-            </Card.Content>
-          </View>
-        )}
-        keyExtractor={(item) => item.vid}
+        renderItem={(itemData) => {
+          let date = new Date(itemData.item.acceptedDate);
+          return (
+            <View>
+              <Card.Content>
+                <List.Item
+                  style={{ height: 80 }}
+                  left={(props) => <List.Icon {...props} icon="account" />}
+                  title={itemData.item.visitorName}
+                  description={
+                    itemData.item.visitingReason +
+                    " " +
+                    date.getDate() +
+                    "-" +
+                    (date.getMonth() + 1) +
+                    "-" +
+                    date.getFullYear() +
+                    " " +
+                    " " +
+                    date.getHours() +
+                    ":" +
+                    date.getMinutes()
+                  }
+                />
+              </Card.Content>
+            </View>
+          );
+        }}
+        keyExtractor={(item) => item.key}
       />
-      <Card.Actions>
-        
-      </Card.Actions>
+      <Card.Actions></Card.Actions>
     </Card>
   );
 };

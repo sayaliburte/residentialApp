@@ -20,6 +20,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import * as visitorInfoActions from "../../store/actions/VisitorInfo";
 const AllRequestScreen = () => {
   const dispatch = useDispatch();
+  const [error, setError] = useState();
+  const [visible, setVisible] = useState(false);
   const allVisitors = useSelector((state) => state.visitors.visitors);
 
   const todayFullDate = new Date();
@@ -38,6 +40,8 @@ const AllRequestScreen = () => {
       visitor.active === true
     );
   });
+  const reversedArray=filterData.reverse();
+
   const deleteHandler = (key) => {
     try {
       dispatch(visitorInfoActions.delete_visitor(key));
@@ -46,71 +50,104 @@ const AllRequestScreen = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.container}>
-      <View>
-        <FlatList
-          data={filterData}
-          keyExtractor={(item, index) => item.key}
-          renderItem={(itemData) => {
-            let date = new Date(itemData.item.date);
-            return (
-              <Card style={styles.Card}>
-                <View style={{ flexDirection: "row" }}>
-                  <Card
-                    style={{
-                      backgroundColor: "#F2D7D9",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <View style={{ margin: 7 }}>
-                      <Image
-                        style={{ width: 120, height: 120, borderRadius: 10 }}
-                        source={{ uri: itemData.item.visitorPhoto_url }}
-                      />
-
-                      <Paragraph style={{ alignSelf: "center" }}>
-                        {itemData.item.visitorName.toUpperCase()}
-                      </Paragraph>
-                      <Paragraph style={{ alignSelf: "center" }}>
-                        {itemData.item.visitingReason}
-                      </Paragraph>
-                    </View>
-                  </Card>
-                  <ScrollView style={{ margin: 9, marginTop: 30 }}>
-                    <Paragraph style={{ flex: 1, color: "white" }}>
-                      {date.getHours() + ":" + date.getMinutes()}
-                    </Paragraph>
-
-                    <Paragraph style={{ flex: 1, color: "white" }}>
-                      Member:{itemData.item.memberName.toUpperCase()}
-                    </Paragraph>
-
-                    <Paragraph style={{ flex: 1, color: "white" }}>
-                      Flat no.: {itemData.item.flatno}
-                    </Paragraph>
-
-                    <Paragraph style={{ flex: 3, color: "white" }}>
-                      Request Status:{itemData.item.status}
-                    </Paragraph>
-                    {itemData.item.status==="Pending"?
-                      <IconButton
-                      style={{
-                        justifyContent: "flex-end",
-                        alignSelf: "flex-end",
-                      }}
-                      icon="delete-outline"
-                      color="white"
-                      size={35}
-                      onPress={deleteHandler.bind(this, itemData.item.key)}
-                    />:null}
-                  </ScrollView>
-                </View>
-              </Card>
-            );
-          }}
-        />
+      <View
+        style={{
+         
+          width: "100%",
+          position: "absolute",
+          backgroundColor: "#171717",
+          opacity: 0.7,
+        }}
+      >
+        <Text style={{ margin: 10, alignSelf: "center",color:"white" }}>Visitor's List</Text>
       </View>
+      {filterData.length !== 0 ? (
+        <View style={{ marginTop: 37 }}>
+          <FlatList
+            data={reversedArray}
+            keyExtractor={(item, index) => item.key}
+            renderItem={(itemData) => {
+              let date = new Date(itemData.item.date);
+              let photo = itemData.item.visitorPhoto_url;
+
+              return (
+                <Card style={styles.Card}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Card
+                      style={{
+                        backgroundColor: "#F2D7D9",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <View style={{ margin: 7 }}>
+                        <Image
+                          style={{ width: 120, height: 120, borderRadius: 10 }}
+                          source={{ uri: photo }}
+                        />
+
+                        <Paragraph style={{ alignSelf: "center" }}>
+                          {itemData.item.visitorName.toUpperCase()}
+                        </Paragraph>
+                        <Paragraph style={{ alignSelf: "center" }}>
+                          {itemData.item.visitingReason}
+                        </Paragraph>
+                      </View>
+                    </Card>
+                    <ScrollView style={{ margin: 9, marginTop: 30 }}>
+                      <Paragraph style={{ flex: 1, color: "white" }}>
+                        {date.getHours() + ":" + date.getMinutes()}
+                      </Paragraph>
+
+                      <Paragraph style={{ flex: 1, color: "white" }}>
+                        Member:{itemData.item.memberName.toUpperCase()}
+                      </Paragraph>
+
+                      <Paragraph style={{ flex: 1, color: "white" }}>
+                        Flat no.: {itemData.item.flatno}
+                      </Paragraph>
+
+                      <Paragraph style={{ flex: 3, color: "white" }}>
+                        Request Status:{itemData.item.status}
+                      </Paragraph>
+                      {itemData.item.status === "Pending" ? (
+                        <IconButton
+                          style={{
+                            justifyContent: "flex-end",
+                            alignSelf: "flex-end",
+                          }}
+                          icon="delete-outline"
+                          color="white"
+                          size={35}
+                          onPress={deleteHandler.bind(this, itemData.item.key)}
+                        />
+                      ) : null}
+                    </ScrollView>
+                  </View>
+                </Card>
+              );
+            }}
+          />
+        </View>
+      ) : (
+        <Card
+          style={{
+            margin: 5,
+            padding: 12,
+            borderRadius: 8,
+            backgroundColor: "#827397",
+            elevation: 5,
+            shadowColor: "black",
+            shadowOpacity: 0.26,
+          }}
+        >
+          <Paragraph style={{ color: "white", alignSelf: "center" }}>
+            No Visitors Added
+          </Paragraph>
+        </Card>
+      )}
     </View>
   );
 };
