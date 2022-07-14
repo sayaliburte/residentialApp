@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import { List, Card, Button, Paragraph } from "react-native-paper";
+import { List, Card, Button, Paragraph, Snackbar } from "react-native-paper";
 import * as authActions from "../../store/actions/auth";
 import * as memberActions from "../../store/actions/member";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Input from "../../components/UI/Input";
 import ImagePicker from "../../components/UI/ImagePicker";
 import * as visitorInfoActions from "../../store/actions/VisitorInfo";
-
+const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
@@ -53,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selectedMemberData, setSelectedMemberData] = useState({});
-  const [success,setSuccess]=useState(false);
+  const [success, setSuccess] = useState(false);
   useEffect(() => {
     if (error) {
       Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
@@ -96,6 +96,7 @@ const HomeScreen = ({ navigation }) => {
     try {
       dispatch(
         visitorInfoActions.add_visitor({
+          date: new Date(),
           visitorName: formState.inputValues.name,
           visitorPhoto_url: selectedImage,
           visitingReason: formState.inputValues.reason,
@@ -106,12 +107,12 @@ const HomeScreen = ({ navigation }) => {
           active: true,
         })
       );
-      setSuccess(true);
     } catch (err) {
       console.log(err);
       setError(err.message);
       setIsLoading(false);
     }
+    setSuccess(true);
     hideModal();
   };
   const allMemberData = useSelector((state) => state.member.members);
@@ -119,6 +120,14 @@ const HomeScreen = ({ navigation }) => {
     (member) =>
       member.memberType === "member" && member.availabilityStatus === true
   );
+  useEffect(() => {
+    try {
+      dispatch(visitorInfoActions.fetch_visitors());
+    } catch (err) {
+      console.log(err.message);
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -283,6 +292,16 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </Modal>
       </View>
+      <Snackbar
+        visible={success}
+        onDismiss={() => {
+          setSuccess(false);
+        }}
+        duration={2000}
+        wrapperStyle={{ top: height - 400 }}
+      >
+        Visitor Added Successfully.
+      </Snackbar>
     </View>
   );
 };
@@ -294,7 +313,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  Card: {
+   Card: {
     margin: 5,
     padding: 15,
     marginHorizontal: 10,

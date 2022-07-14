@@ -1,34 +1,100 @@
 export const ADD_VISITOR = "ADD_VISITOR";
+export const FETCH_VISITORS = "FETCH_VISITORS";
+export const DELETE_VISITOR = "DELETE_VISITOR";
 export const add_visitor = (data) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     try {
-    const response = await fetch(
-      `https://rn-residential-app-default-rtdb.firebaseio.com/visitors.json?auth=${token}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-        }),
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/visitors.json?auth=${token}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something Went Wrong!!");
       }
-    );
-    if (!response.ok) {
-      throw new Error("Something Went Wrong!!");
-    }
-    const resData = await response.json();
+      const resData = await response.json();
 
-    dispatch({
-      type: ADD_VISITOR,
-      visitorData: {
-        key: resData.name,
-        ...data,
-      },
-    });
-}catch(err){
-    throw err;
-}
+      dispatch({
+        type: ADD_VISITOR,
+        visitorData: {
+          key: resData.name,
+          ...data,
+        },
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export const fetch_visitors = () => {
+  return async (dispatch, getState) => {
+    //const token = getState().auth.token;
+
+    try {
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/visitors.json`
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+
+      const loadedVisitorsData = [];
+      for (const key in resData) {
+        loadedVisitorsData.push({
+          key,
+          ...resData[key],
+        });
+      }
+
+      dispatch({
+        type: FETCH_VISITORS,
+        visitors: loadedVisitorsData,
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export const delete_visitor = (key) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/visitors/${key}.json?auth=${token}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status: "Cancelled by Watchman",
+            
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      dispatch({
+        type: DELETE_VISITOR,
+        data: { status: "Cancelled by Watchman" },
+        key: key,
+      });
+    } catch (err) {
+      throw err;
+    }
   };
 };

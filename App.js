@@ -9,13 +9,12 @@ import communicationReducer from "./store/reducers/communication";
 import { StyleSheet, Touchable, Text, View, Image } from "react-native";
 import AppNavigator from "./navigation/AppNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import Communication from "./screens/communication";
-
+import visitorReducer from "./store/reducers/VisitorInfo";
 const rootReducer = combineReducers({
   auth: authReducer,
   member: memberReducer,
   communication: communicationReducer,
+  visitors:visitorReducer
 });
 
 const store = configureStore(

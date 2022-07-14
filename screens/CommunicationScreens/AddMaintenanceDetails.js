@@ -16,7 +16,6 @@ import {
 import ImagePicker from "../../components/UI/ImagePicker";
 
 import { Button, Card, Paragraph, Title } from "react-native-paper";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import { Dropdown } from "react-native-material-dropdown-v2-fixed";
 import { useSelector, useDispatch } from "react-redux";
 import * as communicationActions from "../../store/actions/communication";
@@ -48,48 +47,7 @@ const formReducer = (state, action) => {
 };
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
-const maintenanceDetails = [
-  {
-    id: 1,
-    date: "12/4/2022",
-    month: "Apr 2022",
-    amount: "1000 Rs",
-    transId: 676789809332,
-    photo: {
-      uri: "https://aws1.discourse-cdn.com/business5/uploads/manager1/original/2X/3/3de4cad4b5c61419a030aadaa83244e7e80ea679.png",
-    },
-  },
-  {
-    id: 2,
-    date: "16/4/2022",
-    month: "Apr 2022",
-    amount: "1000 Rs",
-    transId: 690789809332,
-    photo: {
-      uri: "https://aws1.discourse-cdn.com/business5/uploads/manager1/original/2X/3/3de4cad4b5c61419a030aadaa83244e7e80ea679.png",
-    },
-  },
-  {
-    id: 3,
-    date: "20/3/2022",
-    month: "March 2022",
-    amount: "1000 Rs",
-    transId: 69078999332,
-    photo: {
-      uri: "https://aws1.discourse-cdn.com/business5/uploads/manager1/original/2X/3/3de4cad4b5c61419a030aadaa83244e7e80ea679.png",
-    },
-  },
-  {
-    id: 4,
-    date: "20/2/2022",
-    month: "March 2022",
-    amount: "1000 Rs",
-    transId: 69078990332,
-    photo: {
-      uri: "https://aws1.discourse-cdn.com/business5/uploads/manager1/original/2X/3/3de4cad4b5c61419a030aadaa83244e7e80ea679.png",
-    },
-  },
-];
+
 let transactionType = [
   {
     value: "Cash",

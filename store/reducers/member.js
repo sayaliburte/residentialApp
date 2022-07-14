@@ -42,6 +42,6 @@ export default (state = initialState, action) => {
         ...state,
         loggedInMember: null,
       };
-  }
+  } 
   return state;
 };
