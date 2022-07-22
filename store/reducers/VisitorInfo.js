@@ -3,6 +3,7 @@ import {
   FETCH_VISITORS,
   DELETE_VISITOR,
   ACCEPT_VISITOR,
+  DECLINE_VISITOR,
 } from "../actions/VisitorInfo";
 
 const initialState = {
@@ -32,6 +33,14 @@ export default (state = initialState, action) => {
       };
 
     case ACCEPT_VISITOR: {
+      return {
+        ...state,
+        visitors: state.visitors.map((v) =>
+          v.key === action.key ? { ...v, ...action.data } : v
+        ),
+      };
+    }
+    case DECLINE_VISITOR: {
       return {
         ...state,
         visitors: state.visitors.map((v) =>

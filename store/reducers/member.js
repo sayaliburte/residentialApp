@@ -1,4 +1,10 @@
-import { ADD_MEMBERS, UPDATE_HOMESTATUS, LOGOUT } from "../actions/member";
+import {
+  ADD_MEMBERS,
+  UPDATE_HOMESTATUS,
+  LOGOUT,
+  VALIDATE_MEMBER,
+  DELETE_MEMBER,
+} from "../actions/member";
 import { FETCH_MEMBERS } from "../actions/member";
 import { UPDATE_MEMBERS } from "../actions/member";
 const initialState = {
@@ -37,11 +43,27 @@ export default (state = initialState, action) => {
         ),
         loggedInMember: { ...state.loggedInMember, ...action.data },
       };
+
+    case VALIDATE_MEMBER:
+      return {
+        ...state,
+        members: state.members.map((member) =>
+          member.key === action.key ? { ...member, ...action.data } : member
+        ),
+      };
+    case DELETE_MEMBER: {
+      return {
+        ...state,
+        members: state.members.map((member) =>
+          member.key === action.key ? { ...member, ...action.data } : member
+        ),
+      };
+    }
     case LOGOUT:
       return {
         ...state,
         loggedInMember: null,
       };
-  } 
+  }
   return state;
 };

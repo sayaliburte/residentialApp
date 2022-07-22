@@ -2,7 +2,37 @@ export const ADD_VISITOR = "ADD_VISITOR";
 export const FETCH_VISITORS = "FETCH_VISITORS";
 export const DELETE_VISITOR = "DELETE_VISITOR";
 export const ACCEPT_VISITOR = "ACCEPT_VISITOR";
+export const DECLINE_VISITOR = "DECLINE_VISITOR";
 
+export const decline_Visitor = (key, data) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/visitors/${key}.json?auth=${token}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...data }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      dispatch({
+        type: DECLINE_VISITOR,
+        data,
+        key: key,
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
 export const accept_Visitor = (key) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
