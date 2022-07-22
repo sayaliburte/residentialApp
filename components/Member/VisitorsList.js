@@ -6,7 +6,7 @@ const VisitorList = (props) => {
   return (
     <Card style={{ width: "80%", borderRadius: 25 }} elevation={20}>
       <Card.Title
-        title="Visitor's List"
+        title="Accepted Visitor's List"
         style={styles.cardTitle}
         titleStyle={{
           color: "white",
@@ -14,9 +14,11 @@ const VisitorList = (props) => {
         }}
       />
       <FlatList
-        data={props.data}
+        data={props.data.reverse()}
         renderItem={(itemData) => {
-          let date = new Date(itemData.item.acceptedDate);
+          let mydate = new Date(itemData.item.acceptedDate);
+          let mdate = mydate.toLocaleString();
+
           return (
             <View>
               <Card.Content>
@@ -24,20 +26,7 @@ const VisitorList = (props) => {
                   style={{ height: 80 }}
                   left={(props) => <List.Icon {...props} icon="account" />}
                   title={itemData.item.visitorName}
-                  description={
-                    itemData.item.visitingReason +
-                    " " +
-                    date.getDate() +
-                    "-" +
-                    (date.getMonth() + 1) +
-                    "-" +
-                    date.getFullYear() +
-                    " " +
-                    " " +
-                    date.getHours() +
-                    ":" +
-                    date.getMinutes()
-                  }
+                  description={itemData.item.visitingReason + " " + mdate}
                 />
               </Card.Content>
             </View>
