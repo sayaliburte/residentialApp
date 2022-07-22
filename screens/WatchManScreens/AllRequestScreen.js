@@ -17,6 +17,7 @@ import {
   IconButton,
 } from "react-native-paper";
 import AntDesign from "react-native-vector-icons/AntDesign";
+
 import * as visitorInfoActions from "../../store/actions/VisitorInfo";
 const AllRequestScreen = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const AllRequestScreen = () => {
       visitor.active === true
     );
   });
-  const reversedArray=filterData.reverse();
+  const reversedArray = filterData.reverse();
 
   const deleteHandler = (key) => {
     try {
@@ -55,14 +56,15 @@ const AllRequestScreen = () => {
     <View style={styles.container}>
       <View
         style={{
-         
           width: "100%",
           position: "absolute",
           backgroundColor: "#171717",
           opacity: 0.7,
         }}
       >
-        <Text style={{ margin: 10, alignSelf: "center",color:"white" }}>Visitor's List</Text>
+        <Text style={{ margin: 10, alignSelf: "center", color: "white" }}>
+          Visitor's List
+        </Text>
       </View>
       {filterData.length !== 0 ? (
         <View style={{ marginTop: 37 }}>

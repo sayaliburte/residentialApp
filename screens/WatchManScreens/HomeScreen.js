@@ -118,7 +118,9 @@ const HomeScreen = ({ navigation }) => {
   const allMemberData = useSelector((state) => state.member.members);
   const filteredMembers = allMemberData.filter(
     (member) =>
-      member.memberType === "member" && member.availabilityStatus === true
+      member.memberType === "member" &&
+      member.availabilityStatus === true &&
+      member.memberValidity === "Accepted"
   );
   useEffect(() => {
     try {

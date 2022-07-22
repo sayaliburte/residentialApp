@@ -2,7 +2,9 @@ export const ADD_MEMBERS = "ADD_MEMBERS";
 export const FETCH_MEMBERS = "FETCH_MEMBERS";
 export const UPDATE_MEMBERS = "UPDATE_MEMBERS";
 export const UPDATE_HOMESTATUS = "UPDATE_HOMESTATUS";
-export const LOGOUT="LOGOUT";
+export const VALIDATE_MEMBER = "VALIDATE_MEMBER";
+export const LOGOUT = "LOGOUT";
+export const DELETE_MEMBER = "DELETE_MEMBER";
 export const update_homeStatus = (data, key) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -24,9 +26,9 @@ export const update_homeStatus = (data, key) => {
       }
       const resData = await response.json();
       dispatch({
-        type:UPDATE_HOMESTATUS,
+        type: UPDATE_HOMESTATUS,
         data: data,
-        key
+        key,
       });
     } catch (err) {
       throw err;
@@ -142,8 +144,71 @@ export const fetch_members = () => {
   };
 };
 
-export const clearLoggedInUser=()=>{
-  return{
-    type:LOGOUT
-  }
-}
+export const clearLoggedInUser = () => {
+  return {
+    type: LOGOUT,
+  };
+};
+
+export const validate_member = (key) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/members/${key}.json?auth=${token}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            memberValidity: "Accepted",
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      dispatch({
+        type: VALIDATE_MEMBER,
+        data: { memberValidity: "Accepted" },
+        key,
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export const delete_member = (key) => {
+
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      const response = await fetch(
+        `https://rn-residential-app-default-rtdb.firebaseio.com/members/${key}.json?auth=${token}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            memberValidity: "Decline",
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      dispatch({
+        type: DELETE_MEMBER,
+        data: { memberValidity: "Decline" },
+        key,
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
