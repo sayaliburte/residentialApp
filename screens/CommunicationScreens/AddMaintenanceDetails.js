@@ -256,7 +256,7 @@ const AddMaintenanceDetails = ({ navigation }) => {
       </View>
       <View style={{ paddingBottom: 50, margin: 10 }}>
         <FlatList
-          data={filteredArray}
+          data={filteredArray.reverse()}
           keyExtractor={(item) => item.key}
           renderItem={(itemData) => {
             let mydate = new Date(itemData.item.date);
