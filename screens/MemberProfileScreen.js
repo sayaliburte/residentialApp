@@ -10,6 +10,7 @@ import {
   Modal,
   ScrollView,
 } from "react-native";
+
 import Input from "../components/UI/Input";
 import {
   Avatar,

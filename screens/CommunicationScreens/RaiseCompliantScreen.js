@@ -158,7 +158,7 @@ const RaiseComplaintScreen = ({ navigation }) => {
 
       <View style={{ flex: 1, padding: 10 }}>
         <FlatList
-          data={filteredArray}
+          data={filteredArray.reverse()}
           keyExtractor={(item, index) => item.key}
           renderItem={(itemData) => {
             let mydate = new Date(itemData.item.date);
