@@ -4,10 +4,8 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   Modal,
   Dimensions,
-  TextInput,
   ScrollView,
   Alert,
 } from "react-native";
@@ -133,7 +131,7 @@ const PostNewIdeas = ({ navigation }) => {
       </View>
       <View style={{ paddingBottom: 60 }}>
         <FlatList
-          data={filteredArray}
+          data={filteredArray.reverse()}
           keyExtractor={(item) => item.key}
           renderItem={(itemData) => {
             return (
@@ -207,7 +205,7 @@ const PostNewIdeas = ({ navigation }) => {
                 >
                   <View style={{ flex: 1, marginHorizontal: 5 }}>
                     <Button
-                      disabled={uploading || !formState.formIsValid}
+                      disabled={!formState.formIsValid}
                       color="#8CC0DE"
                       mode="contained"
                       onPress={submitHandler}
@@ -221,7 +219,7 @@ const PostNewIdeas = ({ navigation }) => {
                       mode="contained"
                       onPress={hideModal}
                     >
-                      close
+                      Close
                     </Button>
                   </View>
                 </View>

@@ -79,7 +79,8 @@ const DetailViewOfScreens = ({ route }) => {
     (comm) => comm.key === key
   );
   const complaint = filterCommunication.pop();
-  const loadedCommentsData = complaint.comments;
+  const loadedCommentsData = complaint.comments?complaint.comments:"";
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [commentsData, setCommentsData] = useState({
