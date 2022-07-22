@@ -17,6 +17,7 @@ import MemberProfileScreen from "../screens/MemberProfileScreen";
 import DetailViewOfRaiseComplaint from "../screens/CommunicationScreens/DetailViewOfRaiseComplaint";
 import ViewInvitationPhoto from "../screens/CommunicationScreens/ViewInvitationPhoto";
 import DetailViewofPostNewIdea from "../screens/CommunicationScreens/DetailViewOfPostNewIdea";
+import { useSelector, useDispatch } from "react-redux";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const HomeScreenStack = createNativeStackNavigator();
@@ -128,6 +129,15 @@ const Stacks = () => {
   );
 };
 const Tabs = () => {
+  const allVisitors = useSelector((state) => state.visitors.visitors);
+  const memberData = useSelector((state) => state.member.loggedInMember);
+  const filterData = allVisitors.filter((visitor) => {
+    return (
+      visitor.active === true &&
+      visitor.status === "Pending" &&
+      visitor.memberUserId === memberData.userId
+    );
+  });
   return (
     <Tab.Navigator
       screenOptions={{
@@ -158,7 +168,7 @@ const Tabs = () => {
         name="Incoming Visitor Request List"
         component={IncomingRequestScreens}
         options={{
-          tabBarBadge: 5,
+          tabBarBadge: filterData.length,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="navigate-outline" color={color} size={size} />
           ),

@@ -115,9 +115,8 @@ const AuthScreen = () => {
           phone: formState.inputValues.phone,
           email: formState.inputValues.email,
           availabilityStatus: true,
-          memberValidity: false,
+          memberValidity: "Pending",
           pushNotificationToken: "",
-         
         })
       );
     }
